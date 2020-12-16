@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const postRoutes = require('./routes/post.routes');
 
 // Initialize
 const app = express();
@@ -14,5 +15,7 @@ app
   .use(cors())
   .use(express.json())
   .use(express.urlencoded({ extended: false }));
+
+app.use('/api/v1/posts', postRoutes);
 
 module.exports = app;
