@@ -4,6 +4,7 @@
     "rules": {
         "no-unused-vars":"warn",
         "no-console":"off",
-        "func-names":"off"
+        "func-names":"off",
+        "global-require":"off"
     }
 }
