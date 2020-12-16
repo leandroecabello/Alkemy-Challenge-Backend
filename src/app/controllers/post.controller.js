@@ -3,6 +3,7 @@ const postService = require('../services/post.service');
 const postCtrl = {};
 
 postCtrl.getAll = async (req, res) => {
+  res.send('hola');
   try {
     const posts = await postService.getAll();
     console.log(posts);
@@ -20,15 +21,13 @@ postCtrl.addPost = async (req, res) => {
   const { title, content, image, category } = req.body;
 
   try {
-    const operation = await postService.store({
+    const post = await postService.store({
       title,
       content,
       image,
       category,
     });
-    res
-      .status(201)
-      .json({ message: 'Operation created successfully', operation });
+    res.status(201).json({ message: 'Operation created successfully', post });
   } catch (err) {
     console.log(err);
     res.status(500).json({
