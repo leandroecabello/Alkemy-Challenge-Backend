@@ -1,5 +1,19 @@
-const app = require('./app/app');
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
-app.listen(app.get('port'), () => {
-  console.log(`Server on Port: ${app.get('port')}`);
-});
+const app = require('./app/app');
+const { db } = require('./database');
+
+(async function main() {
+  try {
+    await db.dbConnection();
+    await db.dbSyncTables();
+
+    app.listen(app.get('port'), () => {
+      console.log(`Server on Port: ${app.get('port')}`);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+})();
