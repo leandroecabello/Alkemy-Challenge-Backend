@@ -1,9 +1,9 @@
-const Post = require('../models/Post');
+const { Post } = require('../../database');
 
 const postService = {};
 
 postService.getAll = async (post) => {
-  await Post.findAll(post);
+  await Post.findAll({ attributes: [post] });
 };
 
 postService.store = async (post) => {
@@ -21,3 +21,5 @@ postService.setUpdate = async (post, id) => {
 postService.deleteOneById = async (id) => {
   await Post.destroy({ where: { id } });
 };
+
+module.exports = postService;
