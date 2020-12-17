@@ -3,10 +3,8 @@ const cors = require('cors');
 const morgan = require('morgan');
 const postRoutes = require('./routes/post.routes');
 
-// Initialize
 const app = express();
 
-// Settings
 const defaultPort = 4000;
 app.set('port', process.env.PORT || defaultPort);
 

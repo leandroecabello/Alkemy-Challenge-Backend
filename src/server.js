@@ -2,7 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-const app = require('./app/app');
+const app = require('./app');
 const { db } = require('./database');
 
 (async function main() {
