@@ -3,9 +3,8 @@ const postService = require('../services/post.service');
 const postCtrl = {};
 
 postCtrl.getAll = async (req, res) => {
-  const { title, image, category } = req.body;
   try {
-    const posts = await postService.getAll(title, image, category);
+    const posts = await postService.getAll();
     console.log(posts);
     res.status(200).json(posts);
   } catch (err) {
