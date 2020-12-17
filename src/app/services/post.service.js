@@ -1,4 +1,3 @@
-// const { Post } = require('../../database');
 const Post = require('../models/Post');
 
 const postService = {};
