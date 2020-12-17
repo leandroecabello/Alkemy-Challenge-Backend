@@ -1,9 +1,10 @@
-const { Post } = require('../../database');
+// const { Post } = require('../../database');
+const Post = require('../models/Post');
 
 const postService = {};
 
-postService.getAll = async (post) => {
-  await Post.findAll({ attributes: [post] });
+postService.getAll = async () => {
+  await Post.findAll({ attributes: ['id', 'title', 'image', 'category'] });
 };
 
 postService.store = async (post) => {
