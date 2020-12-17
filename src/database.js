@@ -1,11 +1,11 @@
 const Sequelize = require('sequelize');
 const { DDBB } = require('./config/config');
 
-const PostModel = require('./app/models/Post');
+// const PostModel = require('./app/models/Post');
 
 const dbQueryString = `mysql://${DDBB.USER}:${DDBB.PASS}@${DDBB.HOST}:${DDBB.PORT}/${DDBB.NAME}`;
 const sequelize = new Sequelize(dbQueryString);
-const Post = PostModel(sequelize, Sequelize);
+// const Post = PostModel(sequelize, Sequelize);
 
 const db = {};
 
@@ -23,4 +23,4 @@ db.dbSyncTables = async () => {
   console.log('Synchronized tables');
 };
 
-module.exports = { db, sequelize, Post };
+module.exports = { db, sequelize };
