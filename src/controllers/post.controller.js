@@ -1,3 +1,4 @@
+const boom = require('@hapi/boom');
 const postService = require('../services/post.service');
 
 const postCtrl = {};
@@ -8,31 +9,20 @@ postCtrl.getAll = async (req, res) => {
     console.log(posts);
     res.status(200).json(posts);
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      error: 'Something went wrong. Please retry or contact with an admin.',
-      message: err,
-    });
+    res.send(boom.badRequest(err));
   }
 };
 
 postCtrl.addPost = async (req, res) => {
   const { title, content, image, category } = req.body;
 
+  console.log(req.body);
   try {
-    const post = await postService.store({
-      title,
-      content,
-      image,
-      category,
-    });
+    const post = await postService.store(title, content, image, category);
+    console.log(post);
     res.status(201).json({ message: 'Operation created successfully', post });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      error: 'Something went wrong. Please retry or contact with an admin.',
-      message: err,
-    });
+    res.send(boom.badImplementation(err));
   }
 };
 
@@ -43,11 +33,7 @@ postCtrl.getById = async (req, res) => {
     console.log(post);
     res.status(200).json(post);
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      error: 'Something went wrong. Please retry or contact with an admin.',
-      message: err,
-    });
+    res.send(boom.badImplementation(err));
   }
 };
 
@@ -63,10 +49,7 @@ postCtrl.update = async (req, res) => {
       .status(200)
       .json({ message: 'Operation updated successfully', operation });
   } catch (err) {
-    res.status(500).json({
-      error: 'Something went wrong. Please retry or contact with an admin.',
-      message: err,
-    });
+    res.send(boom.badImplementation(err));
   }
 };
 
@@ -78,11 +61,7 @@ postCtrl.deleteById = async (req, res) => {
       .status(200)
       .json({ message: `Operation with id: ${id} was deleted successfully` });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      error: 'Something went wrong. Please retry or contact with an admin.',
-      message: err,
-    });
+    res.send(boom.badImplementation(err));
   }
 };
 
