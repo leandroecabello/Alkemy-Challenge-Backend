@@ -6,15 +6,15 @@ const {
   update,
   deleteById,
 } = require('../controllers/post.controller');
-const { postValidator } = require('../middlewares/middlewares');
+const { validator, HandleError } = require('../middlewares/middlewares');
 
 const router = Router();
 
 router
   .get('/', getAll)
-  .post('/addPost', postValidator, addPost)
+  .post('/addPost', validator, HandleError(addPost))
   .get('/:id', getById)
-  .patch('/editPost/:id', postValidator, update)
+  .patch('/editPost/:id', validator, update)
   .delete('/deletePost/:id', deleteById);
 
 module.exports = router;
