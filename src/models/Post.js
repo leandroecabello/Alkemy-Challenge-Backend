@@ -1,27 +1,22 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database');
 
-const Post = sequelize.define('post', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
+const Post = sequelize.define(
+  'post',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    title: DataTypes.STRING,
+    content: DataTypes.STRING,
+    image: DataTypes.STRING,
+    category: DataTypes.STRING,
   },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  content: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  image: {
-    type: DataTypes.STRING,
-  },
-  category: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-});
+  {
+    freezeTableName: true,
+  }
+);
 
 module.exports = Post;
