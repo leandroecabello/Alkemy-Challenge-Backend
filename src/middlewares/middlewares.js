@@ -2,7 +2,7 @@ const boom = require('@hapi/boom');
 const { check } = require('express-validator');
 
 const middlewares = {
-  asyncMiddleware: (fn) => (req, res, next) => {
+  HandleError: (fn) => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch((err) => {
       if (!err.isBoom) {
         next(boom.badImplementation(err));
@@ -11,7 +11,7 @@ const middlewares = {
     });
   },
 
-  postValidator: [
+  validator: [
     check('title')
       .isLength({ max: 15 })
       .withMessage('max 10 chars')
