@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const { validationResult } = require('express-validator');
 const postService = require('../services/post.service');
 
 const postCtrl = {};
@@ -14,16 +15,19 @@ postCtrl.getAll = async (req, res) => {
 };
 
 postCtrl.addPost = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const validationError = boom.badRequest();
+    validationError.output.payload.details = errors.array();
+    throw validationError;
+  }
+
   const { title, content, image, category } = req.body;
 
-  console.log(req.body);
-  try {
-    const post = await postService.store(title, content, image, category);
-    console.log(post);
-    res.status(201).json({ message: 'Operation created successfully', post });
-  } catch (err) {
-    res.send(boom.badImplementation(err));
-  }
+  const post = await postService.store({ title, content, image, category });
+  console.log(post);
+  res.status(201).json({ message: 'Operation created successfully', post });
 };
 
 postCtrl.getById = async (req, res) => {
