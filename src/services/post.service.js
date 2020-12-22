@@ -3,23 +3,30 @@ const Post = require('../models/Post');
 const postService = {};
 
 postService.getAll = async () => {
-  await Post.findAll({ attributes: ['id', 'title', 'image', 'category'] });
+  const res = await Post.findAll({
+    attributes: ['id', 'title', 'body', 'image'],
+  });
+  return res;
 };
 
 postService.store = async (post) => {
-  await Post.create(post);
+  const res = await Post.create(post);
+  return res;
 };
 
 postService.getOneById = async (id) => {
-  await Post.findOne({ where: { id } });
+  const res = await Post.findOne({ where: { id } });
+  return res;
 };
 
 postService.setUpdate = async (post, id) => {
-  await Post.update(post, { where: { id } });
+  const res = await Post.update(post, { where: { id } });
+  return res;
 };
 
 postService.deleteOneById = async (id) => {
-  await Post.destroy({ where: { id } });
+  const res = await Post.destroy({ where: { id } });
+  return res;
 };
 
 module.exports = postService;
