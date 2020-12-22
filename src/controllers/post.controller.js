@@ -1,72 +1,84 @@
 const boom = require('@hapi/boom');
 const { validationResult } = require('express-validator');
-const postService = require('../services/post.service');
+const {
+  responseWithoutError,
+  validationErrorHandler,
+} = require('../utils/responsesBuilder');
+const { HTTP_CODE } = require('../config/config');
+const refactorPost = require('../utils/refactoredPost');
+const {
+  getAll,
+  getOneById,
+  store,
+  setUpdate,
+  deleteOneById,
+} = require('../services/post.service');
+
+const { CREATE, OK } = HTTP_CODE;
 
 const postCtrl = {};
 
 postCtrl.getAll = async (req, res) => {
-  try {
-    const posts = await postService.getAll();
-    console.log(posts);
-    res.status(200).json(posts);
-  } catch (err) {
-    res.send(boom.badRequest(err));
-  }
+  const data = await getAll();
+  const posts = data.map(refactorPost);
+  console.log(posts);
+  responseWithoutError(res, OK, posts);
 };
 
 postCtrl.addPost = async (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    const validationError = boom.badRequest();
-    validationError.output.payload.details = errors.array();
-    throw validationError;
+    throw validationErrorHandler(errors);
   }
 
-  const { title, content, image, category } = req.body;
-
-  const post = await postService.store({ title, content, image, category });
+  const post = await store(req.body);
   console.log(post);
-  res.status(201).json({ message: 'Operation created successfully', post });
+  responseWithoutError(res, CREATE, {
+    message: 'Operation created successfully',
+    post,
+  });
 };
 
 postCtrl.getById = async (req, res) => {
   const { id } = req.params;
-  try {
-    const post = await postService.getOneById(id);
-    console.log(post);
-    res.status(200).json(post);
-  } catch (err) {
-    res.send(boom.badImplementation(err));
+  const post = await getOneById(id);
+  if (post === null) {
+    throw boom.badRequest('Post not found');
+  } else {
+    responseWithoutError(res, OK, post);
   }
 };
 
 postCtrl.update = async (req, res) => {
   const { id } = req.params;
-  const { title, content, image, category } = req.body;
-  try {
-    const operation = await postService.setUpdate(
-      { title, content, image, category },
-      id
-    );
-    res
-      .status(200)
-      .json({ message: 'Operation updated successfully', operation });
-  } catch (err) {
-    res.send(boom.badImplementation(err));
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw validationErrorHandler(errors);
   }
+
+  const post = await setUpdate(req.body, id);
+  if (post[0] === 0) {
+    const error = 'There is not any post with this id';
+    throw boom.badRequest(error);
+  }
+  responseWithoutError(res, OK, {
+    message: 'Operation updated successfully',
+    post,
+  });
 };
 
 postCtrl.deleteById = async (req, res) => {
   const { id } = req.params;
-  try {
-    await postService.deleteOneById(id);
-    res
-      .status(200)
-      .json({ message: `Operation with id: ${id} was deleted successfully` });
-  } catch (err) {
-    res.send(boom.badImplementation(err));
+  const post = await deleteOneById(id);
+  console.log(post);
+  if (!post) {
+    const error = 'There is not any post with this id';
+    throw boom.badRequest(error);
   }
+  responseWithoutError(res, OK, {
+    message: `Operation with id: ${id} was deleted successfully`,
+  });
 };
 
 module.exports = postCtrl;
