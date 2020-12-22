@@ -2,9 +2,10 @@
     "extends": ["airbnb", "prettier"],
     "plugins": ["prettier"],
     "rules": {
-        "no-unused-vars":"warn",
+        "no-unused-vars":"off",
         "no-console":"off",
         "func-names":"off",
-        "global-require":"off"
+        "global-require":"off",
+        "consistent-return":"off"
     }
 }
