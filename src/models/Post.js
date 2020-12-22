@@ -1,22 +1,27 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database');
+const Category = require('./Category');
 
-const Post = sequelize.define(
-  'post',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    title: DataTypes.STRING,
-    content: DataTypes.STRING,
-    image: DataTypes.STRING,
-    category: DataTypes.STRING,
+const Post = sequelize.define('post', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-  {
-    freezeTableName: true,
-  }
-);
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  body: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  image: DataTypes.STRING,
+});
+
+Category.hasMany(Post, {
+  as: 'categoryId',
+  foreingKey: 'categoryId',
+});
 
 module.exports = Post;

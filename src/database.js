@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize');
 const { DDBB } = require('./config/config');
 
-const dbQueryString = `mysql://${DDBB.USER}:${DDBB.PASS}@${DDBB.HOST}:${DDBB.PORT}/${DDBB.NAME}`;
+const { USER, PASS, HOST, PORT, NAME } = DDBB;
+
+const dbQueryString = `mysql://${USER}:${PASS}@${HOST}:${PORT}/${NAME}`;
 const sequelize = new Sequelize(dbQueryString);
 
 const db = {};
