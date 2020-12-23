@@ -8,6 +8,7 @@ const config = {
     PASS: process.env.DDBB_PASS,
     PORT: process.env.DDBB_PORT,
     HOST: process.env.DDBB_HOST,
+    DIALECT: process.env.DDBB_DIALECT,
   },
 
   DB_TEST: {
@@ -16,6 +17,7 @@ const config = {
     PASS: '',
     PORT: '3306',
     HOST: '127.0.0.1',
+    DIALECT: 'mysql',
   },
 
   HTTP_CODE: {
