@@ -15,13 +15,11 @@ const validator = [
     .notEmpty()
     .withMessage('the content field cannot be empty.'),
   check('image')
-    .isEmpty()
     .isLength({ max: 500 })
     .withMessage('The image url must be less than 500 characters')
     .custom(regexTest)
     .withMessage('The image must be in png, jpg or jpeg format'),
   check('category')
-    .isEmpty()
     .isLength({ max: 20 })
     .withMessage('max 20 chars')
     .isString()
